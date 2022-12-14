@@ -7,14 +7,18 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- {% for i in data %}
-        <h1>{{i.id}}</h1>
-        {% for x in i %}
-            <h3>{{x.id}}</h3>
-            {% for y in x %}
-                <h6>{{y.id}}</h6>
+    {% for i in data %}
+        <h1>{{i.grand}}</h1>
+        {% for x in i.parent_and_child %}
+        
+            {% for d in  x %}
+                {% if forloop.counter == 1%}
+                    <h2 style="margin: 10px;">{{d}}</h2>
+                {%else%}
+                    <h3 style="margin: 100px;">{{d}}</h3>
+                {%endif%}
             {% endfor %}
         {% endfor %}
-    {% endfor %} -->
+    {% endfor %}
 </body>
 </html>

@@ -29,13 +29,17 @@ def home_view(request):
             #         grand_task = Task.objects.filter(pk=parent_task.parent_task_id_id).first()
             #         data[grand_task] = {data[parent_task]}
             #         del data[parent_task]
-            #         skip_data.append(grand_task)
+            #         skip_data.append(grand_task)~
                     
             # skip_data.append(task)
 
 
 
-    return render(request,'main/home.html',{'data':{'a':task}})
+    return render(request,'main/home.html',
+    {'data':[
+        {'grand': 1, 'parent_and_child': [[2,6,7],[3],[4]]   },
+        {}
+        ]})
 
 # def project_view(request,project):
 #     project=[1,2]
