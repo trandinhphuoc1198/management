@@ -3,43 +3,56 @@ from .models import Task
 from django.core.paginator import Paginator
 
 def home_view(request):
-    limit = 10
+    limit = 11
     task_list = Task.objects.all().order_by('-updated_date')
-    data = dict()
-    skip_data = []
+    data = []
 
     for i in range(limit):
+        print(data)
+        loop_must_stop = False
         task = task_list[i]
-        try:
-            skip_data.index(task)
-        except:
-            print(task.id)
-            data[task] = {}
+        print(task,i)
 
-            # if task.parent_task_id:
-            #     parent_task = Task.objects.filter(pk=task.parent_task_id_id).first()
-            #     if data.get(parent_task):
-            #         data[parent_task].add(task)
-            #     else:
-            #         data[parent_task] = {task}
-            #     del data[task]
-            #     skip_data.append(parent_task)
+        if task.parent_task_id:
+            parent_task = Task.objects.filter(pk=task.parent_task_id_id).first()
 
-            #     if parent_task.parent_task_id:
-            #         grand_task = Task.objects.filter(pk=parent_task.parent_task_id_id).first()
-            #         data[grand_task] = {data[parent_task]}
-            #         del data[parent_task]
-            #         skip_data.append(grand_task)~
-                    
-            # skip_data.append(task)
+            if parent_task.parent_task_id:
+                grand_task = Task.objects.filter(pk=parent_task.parent_task_id_id).first()
+                for added_task in data:
+                    if grand_task == added_task['grand']:
+                        for added_parent_task in added_task['parent_and_child']:
+                            if parent_task == added_parent_task[0]:
+                                added_parent_task.append(task)
+                                loop_must_stop = True
+                                break
+                        if loop_must_stop: break
+                        added_task['parent_and_child'].append([parent_task,task])
+                        loop_must_stop = True
+                        break
+                if loop_must_stop: break
+                data.append({'grand': grand_task, 'parent_and_child' : [[parent_task,task]]})
+                loop_must_stop = True
+                break
+            if loop_must_stop: break
+            for added_task in data:
+                if parent_task == added_task['grand']:
+                    added_task['parent_and_child'].append([task])
+                    loop_must_stop = True
+                    break
+            if loop_must_stop: continue
+            data.append({'grand':parent_task,'parent_and_child':[[task]]})
+            continue
+        for added_task in data:
+            if task == added_task['grand']:
+                loop_must_stop = True
+                break
+        if loop_must_stop: continue
+        data.append({'grand':task,'parent_and_child':[]})
+
+    
 
 
-
-    return render(request,'main/home.html',
-    {'data':[
-        {'grand': 1, 'parent_and_child': [[2,6,7],[3],[4]]   },
-        {}
-        ]})
+    return render(request,'main/home.html',{'data': data})
 
 # def project_view(request,project):
 #     project=[1,2]
