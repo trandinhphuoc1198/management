@@ -7,18 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-<<<<<<< HEAD
-    {% for i in data %}
-        <h1>{{i.grand}}</h1>
-        {% for x in i.parent_and_child %}
-        
-            {% for d in  x %}
-                {% if forloop.counter == 1%}
-                    <h2 style="margin: 10px;">{{d}}</h2>
-                {%else%}
-                    <h3 style="margin: 100px;">{{d}}</h3>
-                {%endif%}
-=======
     {% for task in data %}
         <h1>{{task.grand.task_title}}</h1>
         {% for parent_and_child_task in task.parent_and_child %}
@@ -28,7 +16,6 @@
                 {% else %}
                 <h3 style="margin: 100px;">{{parent_or_child_task.task_title}}</h2>
                 {% endif %}
->>>>>>> dev
             {% endfor %}
         {% endfor %}
     {% endfor %}
