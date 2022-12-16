@@ -3,12 +3,12 @@ from .models import Task
 from django.core.paginator import Paginator
 
 def home_view(request):
-    limit = 20
+    limit = 11
     task_list = Task.objects.all()
     data = []
     getGrands = lambda task_list : (task['grand'] for task in task_list)
     getParent = lambda parent : parent['parent_and_child'][0] if parent['parent_and_child'] else [None]
-    getParentList = lambda parent_list : (parent[0] for parent in parent_list)
+    getParentList = lambda parent_list : (parent[0] for parent in parent_list['parent_and_child'])
     for i in range(limit):
         print(data)
         task = task_list[i]
@@ -18,8 +18,8 @@ def home_view(request):
             if grand_task := Task.objects.filter(pk=parent_task.parent_task_id_id).first():
                 if grand_task in getGrands(data):
                     task_index = next(i for i,task in enumerate(getGrands(data)) if task == grand_task)
-                    if parent_task == getParent(data[task_index]):
-                        data[task_index]['parent_and_child'][next(i for i,task in enumerate(getParentList(data[task_index])) if task == parent_task)].append([task])
+                    if parent_task in getParentList(data[task_index]):
+                        data[task_index]['parent_and_child'][next(i for i,task in enumerate(getParentList(data[task_index])) if task == parent_task)].append(task)
                         continue
                     data[task_index]['parent_and_child'].append([parent_task,task])
                     continue
@@ -27,7 +27,7 @@ def home_view(request):
                 continue
             if parent_task in getGrands(data):
                 task_index = next(i for i,task in enumerate(getGrands(data)) if task == parent_task)
-                if task == getParent(data[task_index]):
+                if task not in getParentList(data[task_index]):
                     data[task_index]['parent_and_child'].append([task])
                 continue
         if task not in getGrands(data):
@@ -88,3 +88,4 @@ def home_view(request):
 #                 grand_task = Task.objects.filter(pk=parent_task.parent_task_id_id).first()
 
 #     return render(request,'main/home.html')
+
