@@ -49,6 +49,7 @@ def sync_task(request,days=7):
     Shiten = 1000
     Garage_Sales = 2000
     Other = 3000
+    WebikeGarageSale = 48
     MarketPlace_Staff_Tool = 49
     MarketPlace_API = 50
     MarketPlace = 51
@@ -61,7 +62,7 @@ def sync_task(request,days=7):
     taskes_from_redmine = Issues.objects.filter(updated_on__gte=point_of_time_to_sync).order_by('created_on')
     taskes_to_management = []
     for task in taskes_from_redmine:
-        project_id = Garage_Sales if task.project_id in [MarketPlace_Staff_Tool,MarketPlace_API,MarketPlace] else (Shiten if task.project_id != Common_Project else Other)
+        project_id = Garage_Sales if task.project_id in [MarketPlace_Staff_Tool,MarketPlace_API,MarketPlace,WebikeGarageSale] else (Shiten if task.project_id != Common_Project else Other)
         taskes_to_management.append({
                 'id' : task.id,
                 'task_title' : task.subject,
