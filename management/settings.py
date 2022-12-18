@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main'
+    'main',
+    'redmine'
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'management',
+        'HOST':'0.0.0.0',
+        'PORT':'3700',
+        'USER':'root',
+        'PASSWORD':'1'
+    },
+    'redmine': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'redmine',
         'HOST':'0.0.0.0',
         'PORT':'3700',
         'USER':'root',
@@ -126,3 +135,5 @@ STATIC_ROOT = '/static'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DATABASE_ROUTERS = ['routers.db_routers.RedmineRouter']

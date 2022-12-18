@@ -1,19 +1,28 @@
 from django.shortcuts import render
 from .models import Task
-from django.core.paginator import Paginator
+from datetime import timedelta,datetime
+from pytz import timezone
 
-def home_view(request):
-    limit = 11
-    task_list = Task.objects.all()
+def home_view(request,project=None):
+    project = [1000] if request.path == '/shiten' else ([2000] if request.path == '/grs' else [1000,2000])
+    today = timezone('Asia/Ho_Chi_Minh').localize(datetime.now())
+    date_time = (today-timedelta(days=7),today) if request.GET.get('updateStatus')=='inprocess' \
+                else (today-timedelta(days=30),today-timedelta(days=7)) if request.GET.get('updateStatus')=='pending' else (today-timedelta(days=365),today)
+    status = [1,2,3] if request.GET.get('status')=='inprocess' else ([3] if request.GET.get('status')=='pending' else ([4]if request.GET.get('status')=='finished' else[1,2,3,4]))
+    person = [57,58,52,10] if not request.GET.get('person') else ([1] if request.GET.get('person')=='phuong' else [2])
+    limit = int(request.GET.get('limit')) if request.GET.get('limit') else 50
+    filters = {
+        'project__in' : project,
+        'updated_date__range' : date_time,
+        'status__in' : status,
+        'person_in_charge__in' : person,
+    }
+    task_list = Task.objects.filter(**filters)
     data = []
     getGrands = lambda task_list : (task['grand'] for task in task_list)
-    getParent = lambda parent : parent['parent_and_child'][0] if parent['parent_and_child'] else [None]
     getParentList = lambda parent_list : (parent[0] for parent in parent_list['parent_and_child'])
     for i in range(limit):
-        print(data)
         task = task_list[i]
-        print(task,i)
-
         if parent_task := Task.objects.filter(pk=task.parent_task_id_id).first():
             if grand_task := Task.objects.filter(pk=parent_task.parent_task_id_id).first():
                 if grand_task in getGrands(data):
@@ -33,59 +42,4 @@ def home_view(request):
         if task not in getGrands(data):
             data.append({'grand':task,'parent_and_child':[]})
 
-
-        #     if parent_task.parent_task_id:
-        #         grand_task = Task.objects.filter(pk=parent_task.parent_task_id_id).first()
-        #         for added_task in data:
-        #             if grand_task == added_task['grand']:
-        #                 for added_parent_task in added_task['parent_and_child']:
-        #                     if parent_task == added_parent_task[0]:
-        #                         added_parent_task.append(task)
-        #                         loop_must_stop = True
-        #                         break
-        #                 if loop_must_stop: break
-        #                 added_task['parent_and_child'].append([parent_task,task])
-        #                 loop_must_stop = True
-        #                 break
-        #         if loop_must_stop: continue
-        #         data.append({'grand': grand_task, 'parent_and_child' : [[parent_task,task]]})
-        #         loop_must_stop = True
-        #         continue
-        #     if loop_must_stop: continue
-        #     for added_task in data:
-        #         if parent_task == added_task['grand'] and not task in added_task['parent_and_child']:
-        #             added_task['parent_and_child'].append([task])
-        #             loop_must_stop = True
-        #             break
-        #     if loop_must_stop: continue
-        #     data.append({'grand':parent_task,'parent_and_child':[[task]]})
-        #     continue
-        # for added_task in data:
-        #     if task == added_task['grand']:
-        #         loop_must_stop = True
-        #         break
-        # if loop_must_stop: continue
-        # data.append({'grand':task,'parent_and_child':[]})
-
-    
-    print(data)
-
     return render(request,'main/home.html',{'data': data})
-
-# def project_view(request,project):
-#     project=[1,2]
-#     if project:
-#         project = [1] if project=='shiten' else [2]
-#     limit = 2
-#     task_list = Task.objects.filter(project__in=project).order_by('-updated_date')[:limit]
-#     total_task_to_show = []
-
-#     for i in range(limit):
-#         task = task_list[i]
-#         if task.parent_task_id:
-#             parent_task = Task.objects.filter(pk=task.parent_task_id_id).first()
-#             if parent_task.parent_task_id:
-#                 grand_task = Task.objects.filter(pk=parent_task.parent_task_id_id).first()
-
-#     return render(request,'main/home.html')
-

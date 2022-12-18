@@ -8,13 +8,13 @@
 </head>
 <body>
     {% for task in data %}
-        <h1>{{task.grand.task_title}}</h1>
+        <h3>{{task.grand.task_title}}</h3>
         {% for parent_and_child_task in task.parent_and_child %}
             {% for parent_or_child_task in parent_and_child_task %}
                 {% if forloop.counter == 1 %}
-                <h2 style="margin-left: 50px;">╚ {{parent_or_child_task.task_title}}</h2>
+                <h4 style="margin-left: 50px;">╚ {{parent_or_child_task.task_title}}</h4>
                 {% else %}
-                <h2 style="margin-left: 75px;">╚ {{parent_or_child_task.task_title}}</h2>
+                <h4 style="margin-left: 75px;">╚ {{parent_or_child_task.task_title}}</h4>
                 {% endif %}
             {% endfor %}
         {% endfor %}
