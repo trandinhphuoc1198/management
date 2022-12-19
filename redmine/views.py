@@ -67,6 +67,7 @@ def sync_task(request,days=7):
                 'id' : task.id,
                 'task_title' : task.subject,
                 'status_id' : task.status_id,
+                'done_ratio' : task.done_ratio,
                 'parent_task_id_id' : task.parent_id,
                 'description' : task.description,
                 'target_date' :task.due_date,
@@ -95,3 +96,32 @@ def sync_task(request,days=7):
                 return HttpResponse(e)
     print(len(taskes_to_management))
     return HttpResponse('Sync task success!')
+
+
+def sync_logtime(request,days=7):
+    days=int(days)
+    print(days)
+
+    tz = timezone('Asia/Ho_Chi_Minh')
+    point_of_time_to_sync = tz.localize(datetime.now() - timedelta(days=days))
+    logtimes_from_redmine = TimeEntries.objects.filter(updated_on__gte=point_of_time_to_sync).order_by('created_on')
+    logtimes_to_management = []
+    for logtime in logtimes_from_redmine:
+        logtimes_to_management.append({
+                'id' : logtime.id,
+                'person_id' : logtime.user_id,
+                'activity_id' : logtime.activity_id,
+                'task_id_id' : logtime.issue_id,
+                'spent_time' : logtime.hours,
+                'comments' : logtime.comments,
+                'created_date' : logtime.created_on,
+                'updated_date' : logtime.updated_on
+            })
+
+    for logtime in logtimes_to_management:
+        try:
+            LogTime.objects.update_or_create(pk=logtime['id'],defaults=logtime)
+        except Exception as e:
+            print('=============',logtime['id'],'==============')
+            return HttpResponse(e)
+    return HttpResponse('Sync logtime success!')

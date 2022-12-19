@@ -37,6 +37,7 @@ class Activity(models.Model):
 class Task(models.Model):
     task_title = models.CharField(max_length=255)
     status = models.ForeignKey(Task_Status,on_delete=models.RESTRICT)
+    done_ratio = models.IntegerField(default=0)
     parent_task_id = models.ForeignKey('self',null=True,on_delete=models.RESTRICT)
     description = models.TextField(default='')
     target_date=models.DateField(null=True)
