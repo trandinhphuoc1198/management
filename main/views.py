@@ -10,7 +10,7 @@ def home_view(request,project=None):
                 else (today-timedelta(days=30),today-timedelta(days=7)) if request.GET.get('updateStatus')=='pending' else (today-timedelta(days=365),today)
     status = [1,2,3,4,5,6,7,8] if request.GET.get('status')=='inprocess' else ([3] if request.GET.get('status')=='pending' else ([4]if request.GET.get('status')=='finished' else[1,2,3,4,5,6,7,8]))
     person = [57,58,52,10] if not request.GET.get('person') else ([1] if request.GET.get('person')=='phuong' else [2])
-    limit = int(request.GET.get('limit')) if request.GET.get('limit') else 20
+    limit = int(request.GET.get('limit')) if request.GET.get('limit') else 100
     filters = {
         'project__in' : project,
         'updated_date__range' : date_time,
@@ -42,5 +42,10 @@ def home_view(request,project=None):
                 continue
         if task not in getGrands(data):
             data.append({'grand':task,'parent_and_child':[]})
-
-    return render(request,'main/home.html',{'data': data})
+    current_page = [None,'active',None] if 'shiten' in request.path else \
+        ([None,None,'active'] if 'grs' in request.path else ['active',None,None])
+    context = {
+        'data' : data,
+        'path' : current_page
+    }
+    return render(request,'main/home.html',context)

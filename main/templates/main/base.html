@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.min.css' %}">
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+        <title>[EC-Back-P] - {{title}}</title>
+    {% else %}
+        <title>[EC-Back-P] - Management</title>
+    {% endif %}
+</head>
+<body>
+    <div class="container">
+        {%block content%}{%endblock%}
+    </div>
+
+    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="{% static 'images/python_logo.png' %}" alt="Logo"  height="35" class="d-inline-block rounded align-text-center">
+            Management</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ">
+              <li class="nav-item">
+                <a class="nav-link  {{path.0}} " aria-current="page" href="/top">All</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{path.1}}" href="/top/shiten">Shiten</a>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link {{path.2}}" href="/top/grs">Garage Sales</a>
+              </li>
+              <li class="nav-item dropup">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropup</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
