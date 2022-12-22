@@ -5,6 +5,16 @@ from datetime import datetime,timedelta
 from pytz import timezone
 from django.db import IntegrityError
 
+Shiten = 1000
+Garage_Sales = 2000
+Other = 3000
+WebikeGarageSale = 48
+MarketPlace_Staff_Tool = 49
+MarketPlace_API = 50
+MarketPlace = 51
+RBM_B = 4
+RC_BranchManager = 5
+Common_Project = 17
 
 def sync_meta_data(request):
     try:
@@ -45,18 +55,6 @@ def sync_meta_data(request):
 
 def sync_task(request,days=7):
     days=int(days)
-    print(days)
-    Shiten = 1000
-    Garage_Sales = 2000
-    Other = 3000
-    WebikeGarageSale = 48
-    MarketPlace_Staff_Tool = 49
-    MarketPlace_API = 50
-    MarketPlace = 51
-    RBM_B = 4
-    RC_BranchManager = 5
-    Common_Project = 17
-
     tz = timezone('Asia/Ho_Chi_Minh')
     point_of_time_to_sync = tz.localize(datetime.now() - timedelta(days=days))
     taskes_from_redmine = Issues.objects.filter(updated_on__gte=point_of_time_to_sync).order_by('created_on')
@@ -86,17 +84,47 @@ def sync_task(request,days=7):
     while retry:
         retry = False
         for task in taskes_to_management:
-            print(task)
             try:
                 Task.objects.update_or_create(pk=task['id'],defaults=task)
             except IntegrityError:
-                retry = True
+                sync_specified_task(request,task['id'])
             except Exception as e:
                 print('=============',task['id'],'==============')
                 return HttpResponse(e)
-    print(len(taskes_to_management))
     return HttpResponse('Sync task success!')
 
+def sync_specified_task(request,id=None):
+    task_from_redmine = Issues.objects.get(pk=id)
+    
+    project_id = Garage_Sales if task_from_redmine.project_id in [MarketPlace_Staff_Tool,MarketPlace_API,MarketPlace,WebikeGarageSale] \
+                    else (Shiten if task_from_redmine.project_id != Common_Project else Other)
+    print(id)
+    while True:
+        try:
+            Task.objects.update_or_create(pk=id,defaults={
+                    'id' : task_from_redmine.id,
+                    'task_title' : task_from_redmine.subject,
+                    'status_id' : task_from_redmine.status_id,
+                    'done_ratio' : task_from_redmine.done_ratio,
+                    'parent_task_id_id' : task_from_redmine.parent_id,
+                    'description' : task_from_redmine.description,
+                    'target_date' :task_from_redmine.due_date,
+                    'type_id' : task_from_redmine.tracker_id,
+                    'priority' : task_from_redmine.priority_id,
+                    'person_in_charge_id' : task_from_redmine.assigned_to_id,
+                    'project_id' : project_id,
+                    'category_id' : task_from_redmine.project_id,
+                    'note' : None,
+                    'spent_time' : 0,
+                    'estimate_time' : task_from_redmine.estimated_hours,
+                    'created_date' : task_from_redmine.created_on,
+                    'updated_date' : task_from_redmine.updated_on
+                })
+            return HttpResponse('Sync task success!')
+        except IntegrityError:
+            sync_specified_task(request,task_from_redmine.parent_id)
+        except Exception as e:
+            return HttpResponse(e)
 
 def sync_logtime(request,days=7):
     days=int(days)
@@ -121,6 +149,8 @@ def sync_logtime(request,days=7):
     for logtime in logtimes_to_management:
         try:
             LogTime.objects.update_or_create(pk=logtime['id'],defaults=logtime)
+        except IntegrityError:
+            sync_specified_task(request,logtime['task_id_id'])
         except Exception as e:
             print('=============',logtime['id'],'==============')
             return HttpResponse(e)
