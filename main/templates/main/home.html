@@ -1,19 +1,28 @@
 {% extends "main/base.html" %}
 {% block content %}
-<table class="table table-hover">
+<table class="table table-hover table-responsive">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Title</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Status</th>
+        <th scope="col">%</th>
+        <th scope="col">Assignee</th>
+        <th scope="col">Updated</th>
       </tr>
     </thead>
     <tbody>
         {% for task in data %}
             <tr>
                 <th scope="row">{{task.grand.id}}</th>
-                <td>{{task.grand.task_title}}</td>
+                <td >※{{task.grand.task_title}}</td>
+                <td>{{task.grand.status.status}}</td>
+                <td>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{task.grand.done_ratio}}%;" aria-valuenow="{{task.grand.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.grand.done_ratio}}</div>
+                  </div>
+                </td>
+                <td>{{task.grand.person_in_charge.name}}</td>
             </tr>
         
             {% for parent_and_child_task in task.parent_and_child %}
@@ -22,9 +31,22 @@
                         <th scope="row">{{parent_or_child_task.id}}</th>
                         {% if forloop.counter == 1 %}
                         <td><p style="margin-left: 10px;">╚ {{parent_or_child_task.task_title}}</p></td>
-                
+                        <td>{{parent_or_child_task.status.status}}</td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{parent_or_child_task.done_ratio}}%;" aria-valuenow="{{parent_or_child_task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.grand.done_ratio}}</div>
+                          </div>
+                        </td>
+                        <td>{{parent_or_child_task.person_in_charge.name}}</td>
                         {% else %}
                         <td><p style="margin-left: 20px;">╚ {{parent_or_child_task.task_title}}</p></td>
+                        <td>{{parent_or_child_task.status.status}}</td>
+                        <td>
+                          <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{parent_or_child_task.done_ratio}}%;" aria-valuenow="{{parent_or_child_task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.grand.done_ratio}}</div>
+                          </div>
+                        </td>
+                        <td>{{parent_or_child_task.person_in_charge.name}}</td>
                         {% endif %}
                     </tr>
             {% endfor %}
