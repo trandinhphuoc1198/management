@@ -26,7 +26,8 @@ class Project(models.Model):
 
 class Task_Category(models.Model):
     category = models.CharField(max_length=255)
-    project = models.ForeignKey(Project,on_delete=models.RESTRICT)
+    project = models.ForeignKey(Project,on_delete=models.RESTRICT,null=True)
+    category_parent = models.ForeignKey('self',on_delete=models.RESTRICT,null=True)
 
     def __str__(self) -> str:
         return self.category
@@ -46,7 +47,7 @@ class Task(models.Model):
     person_in_charge = models.ForeignKey(Person,on_delete=models.RESTRICT,null=True)
     project = models.ForeignKey(Project,on_delete=models.RESTRICT)
     category = models.ForeignKey(Task_Category,on_delete=models.RESTRICT)
-    note = models.CharField(max_length=1000,null=True)
+    note = models.CharField(max_length=1000,null=True,default='')
     spent_time = models.FloatField(default=0)
     estimate_time = models.FloatField(null=True)
     created_date=models.DateTimeField()

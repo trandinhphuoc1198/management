@@ -17,7 +17,8 @@ def home_view(request,project=None):
         'status__in' : status,
         'person_in_charge__in' : person,
     }
-    task_list = Task.objects.filter(**filters)
+    sort = '-updated_date' if not request.GET.get('sort') else request.GET.get('sort')
+    task_list = Task.objects.filter(**filters).order_by(sort)
     print(filters)
     data = []
     getGrands = lambda task_list : (task['grand'] for task in task_list)

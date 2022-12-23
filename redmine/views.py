@@ -27,7 +27,7 @@ def sync_meta_data(request):
         persons_from_redmine = Users.objects.all()
         persons_to_management = []
         for person in persons_from_redmine:
-            persons_to_management.append(Person(id=person.id,name=f'{person.firstname} {person.lastname}'))
+            persons_to_management.append(Person(id=person.id,name=f'{person.lastname}'))
         Person.objects.bulk_create(persons_to_management,update_conflicts=True,update_fields=['name'])
 
         task_statuses_from_redmine = IssueStatuses.objects.all()
@@ -47,6 +47,25 @@ def sync_meta_data(request):
         for activity in activities_from_redmine:
             activities_to_management.append(Activity(id=activity.id,activity=activity.name))
         Activity.objects.bulk_create(activities_to_management,update_conflicts=True,update_fields=['activity'])
+
+        categories_to_management =[
+            Task_Category(id=17,category='Common Project',project_id=3000),
+            Task_Category(id=4,category='RBM&B',project_id=1000),
+            Task_Category(id=5,category='RBM',project_id=1000),
+            Task_Category(id=52,category='RBM-Batch',project_id=1000),
+            Task_Category(id=48,category='WebikeGarageSale',project_id=2000),
+            Task_Category(id=49,category='MarketPlace_Staff_Tool',project_id=2000),
+            Task_Category(id=50,category='MarketPlace_API',project_id=2000),
+            Task_Category(id=51,category='MarketPlace',project_id=2000),
+            Task_Category(id=56,category='Rakuten Contact Us',project_id=1000,category_parent_id=52),
+            Task_Category(id=57,category='Rakuten Order',project_id=1000,category_parent_id=52),
+            Task_Category(id=58,category='Rakuten Product',project_id=1000,category_parent_id=52),
+            Task_Category(id=59,category='Yahoo Contact Us',project_id=1000,category_parent_id=52),
+            Task_Category(id=60,category='Yahoo Product',project_id=1000,category_parent_id=52),
+            Task_Category(id=61,category='Yahoo Order',project_id=1000,category_parent_id=52),
+            Task_Category(id=62,category='Other',project_id=1000,category_parent_id=52)
+        ]
+        Task_Category.objects.bulk_create(categories_to_management,update_conflicts=True,update_fields=['category'])
         
         return HttpResponse('Sync meta data success')
     except Exception as e:
@@ -60,7 +79,9 @@ def sync_task(request,days=7):
     taskes_from_redmine = Issues.objects.filter(updated_on__gte=point_of_time_to_sync).order_by('created_on')
     taskes_to_management = []
     for task in taskes_from_redmine:
-        project_id = Garage_Sales if task.project_id in [MarketPlace_Staff_Tool,MarketPlace_API,MarketPlace,WebikeGarageSale] else (Shiten if task.project_id != Common_Project else Other)
+        project_id = Garage_Sales if task.project_id in [MarketPlace_Staff_Tool,MarketPlace_API,MarketPlace,WebikeGarageSale] \
+                    else (Shiten if task.project_id != Common_Project else Other)
+        category_id = task.category_id if task.category_id else task.project_id
         taskes_to_management.append({
                 'id' : task.id,
                 'task_title' : task.subject,
@@ -73,8 +94,8 @@ def sync_task(request,days=7):
                 'priority' : task.priority_id,
                 'person_in_charge_id' : task.assigned_to_id,
                 'project_id' : project_id,
-                'category_id' : task.project_id,
-                'note' : None,
+                'category_id' : category_id,
+                'note' : '',
                 'spent_time' : 0,
                 'estimate_time' : task.estimated_hours,
                 'created_date' : task.created_on,
@@ -86,19 +107,20 @@ def sync_task(request,days=7):
         for task in taskes_to_management:
             try:
                 Task.objects.update_or_create(pk=task['id'],defaults=task)
-            except IntegrityError:
-                sync_specified_task(request,task['id'])
+            except IntegrityError as e:
+                sync_specified_task(request,task['parent_task_id_id'])
             except Exception as e:
                 print('=============',task['id'],'==============')
                 return HttpResponse(e)
     return HttpResponse('Sync task success!')
 
 def sync_specified_task(request,id=None):
+    print(id)
     task_from_redmine = Issues.objects.get(pk=id)
     
     project_id = Garage_Sales if task_from_redmine.project_id in [MarketPlace_Staff_Tool,MarketPlace_API,MarketPlace,WebikeGarageSale] \
                     else (Shiten if task_from_redmine.project_id != Common_Project else Other)
-    print(id)
+    category_id = task_from_redmine.category_id if task_from_redmine.category_id else task_from_redmine.project_id
     while True:
         try:
             Task.objects.update_or_create(pk=id,defaults={
@@ -113,8 +135,8 @@ def sync_specified_task(request,id=None):
                     'priority' : task_from_redmine.priority_id,
                     'person_in_charge_id' : task_from_redmine.assigned_to_id,
                     'project_id' : project_id,
-                    'category_id' : task_from_redmine.project_id,
-                    'note' : None,
+                    'category_id' : category_id,
+                    'note' : '',
                     'spent_time' : 0,
                     'estimate_time' : task_from_redmine.estimated_hours,
                     'created_date' : task_from_redmine.created_on,

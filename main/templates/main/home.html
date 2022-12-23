@@ -1,28 +1,40 @@
 {% extends "main/base.html" %}
 {% block content %}
-<table class="table table-hover table-responsive">
-    <thead>
+
+<div class=" d-flex justify-content-center">
+  <span class="h1 border rounded border-primary mb-4">Task Process</span>
+</div>
+<table class="table table-bordered border border-dark table-hover m-auto table-responsive">
+    <thead style="vertical-align: middle;" class="text-center" >
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
+        <th scope="col">ID</th>
+        <th style="width: 60ch;" scope="col">Title</th>
+        <th>Type</th>
+        <th>Time Spent</th>
         <th scope="col">Status</th>
         <th scope="col">%</th>
         <th scope="col">Assignee</th>
+        <th scope="col">Note</th>
         <th scope="col">Updated</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody style="vertical-align: middle;">
+      
         {% for task in data %}
             <tr>
-                <th scope="row">{{task.grand.id}}</th>
-                <td >※{{task.grand.task_title}}</td>
-                <td>{{task.grand.status.status}}</td>
+                <th class="text-center" scope="row">{{task.grand.id}}</th>
+                <td><a class="text-decoration-none" href="#">{{task.grand.task_title}}</a></td>
+                <td class="text-center" >{{task.grand.type.type}}</td>
+                <td class="text-center"> {{task.grand.spent_time}}</td>
+                <td class="text-center" >{{task.grand.status.status}}</td>
                 <td>
-                  <div class="progress">
+                  <div class="progress " style="width: 10ch;">
                     <div class="progress-bar" role="progressbar" style="width: {{task.grand.done_ratio}}%;" aria-valuenow="{{task.grand.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.grand.done_ratio}}</div>
                   </div>
                 </td>
-                <td>{{task.grand.person_in_charge.name}}</td>
+                <td class="text-center">{{task.grand.person_in_charge.name}}</td>
+                <td>{{task.grand.note|truncatechars:30}}</td>
+                <td class="text-center">{{task.grand.updated_date|timesince}}</td>
             </tr>
         
             {% for parent_and_child_task in task.parent_and_child %}
@@ -30,23 +42,31 @@
                     <tr>
                         <th scope="row">{{parent_or_child_task.id}}</th>
                         {% if forloop.counter == 1 %}
-                        <td><p style="margin-left: 10px;">╚ {{parent_or_child_task.task_title}}</p></td>
-                        <td>{{parent_or_child_task.status.status}}</td>
+                        <td><p style="margin-left: 15px;">╚ <a class="text-decoration-none" href="#">{{parent_or_child_task.task_title}}</a></p></td>
+                        <td class="text-center">{{parent_or_child_task.type.type}}</td>
+                        <td class="text-center">{{parent_or_child_task.spent_time}}</td>
+                        <td class="text-center">{{parent_or_child_task.status.status}}</td>
                         <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: {{parent_or_child_task.done_ratio}}%;" aria-valuenow="{{parent_or_child_task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.grand.done_ratio}}</div>
+                          <div class="progress" style="width: 10ch;">
+                            <div class="progress-bar" role="progressbar" style="width: {{parent_or_child_task.done_ratio}}%;" aria-valuenow="{{parent_or_child_task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{parent_or_child_task.done_ratio}}</div>
                           </div>
                         </td>
-                        <td>{{parent_or_child_task.person_in_charge.name}}</td>
+                        <td class="text-center">{{parent_or_child_task.person_in_charge.name}}</td>
+                        <td>{{parent_or_child_task.note|truncatechars:30}}</td>
+                        <td class="text-center">{{parent_or_child_task.updated_date|timesince}}</td>
                         {% else %}
-                        <td><p style="margin-left: 20px;">╚ {{parent_or_child_task.task_title}}</p></td>
-                        <td>{{parent_or_child_task.status.status}}</td>
+                        <td><p style="margin-left: 30px;">╚ <a class="text-decoration-none" href="#">{{parent_or_child_task.task_title}}</a></p></td>
+                        <td class="text-center">{{parent_or_child_task.type.type}}</td>
+                        <td class="text-center">{{parent_or_child_task.spent_time}}</td>
+                        <td class="text-center">{{parent_or_child_task.status.status}}</td>
                         <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: {{parent_or_child_task.done_ratio}}%;" aria-valuenow="{{parent_or_child_task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.grand.done_ratio}}</div>
+                          <div class="progress" style="width: 10ch;">
+                            <div class="progress-bar" role="progressbar" style="width: {{parent_or_child_task.done_ratio}}%" aria-valuenow="{{parent_or_child_task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{parent_or_child_task.done_ratio}}</div>
                           </div>
                         </td>
-                        <td>{{parent_or_child_task.person_in_charge.name}}</td>
+                        <td class="text-center">{{parent_or_child_task.person_in_charge.name}}</td>
+                        <td>{{parent_or_child_task.note|truncatechars:30}}</td>
+                        <td class="text-center">{{parent_or_child_task.updated_date|timesince}}</td>
                         {% endif %}
                     </tr>
             {% endfor %}
