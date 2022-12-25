@@ -19,7 +19,7 @@
         {%block content%}{%endblock%}
     </div>
 
-    <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+    <nav class="navbar sticky-bottom fixed-bottom navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
             <img src="{% static 'images/python_logo.png' %}" alt="Logo"  height="35" class="d-inline-block rounded align-text-center">
@@ -29,23 +29,61 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ">
-              <li class="nav-item">
-                <a class="nav-link  {{path.0}} " aria-current="page" href="/top">All</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link {{path.1}}" href="/top/shiten">Shiten</a>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link {{path.2}}" href="/top/grs">Garage Sales</a>
-              </li>
-              <li class="nav-item dropup">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Sync</a>
+              <div class="btn-group dropup">
+                <a href="/top" type="button" class="{{path.0}} btn btn-secondary">
+                  All
+                </a>
+                <button type="button" class="{{path.0}} btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="visually-hidden"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/top">New</a></li>
+                  <li><a class="dropdown-item" href="/top">In Process</a></li>
+                  <li><a class="dropdown-item" href="/top">Pending</a></li>
+                  <li><a class="dropdown-item" href="/top">Finish</a></li>
+                </ul>
+              </div>
+              <div class="btn-group dropup">
+                <a href="/top?project=1000" type="button" class="{{path.1}} btn btn-secondary">
+                  Shiten
+                </a>
+                <button type="button" class="{{path.1}} btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="visually-hidden"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/top?project=1000">New</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000">In Process</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000">Pending</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000">Finish</a></li>
+                </ul>
+              </div>
+              <div class="btn-group dropup">
+                <a href="/top?project=2000" type="button" class=" {{path.2}} btn btn-secondary">
+                  Garage Sales
+                </a>
+                <button type="button" class="{{path.2}} btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="visually-hidden"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/top?project=2000">New</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000">In Process</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000">Pending</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000">Finish</a></li>
+                </ul>
+              </div>
+              <div class="btn-group dropup">
+                <a href="/sync/task" type="button" class="btn btn-secondary">
+                  Sync
+                </a>
+                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="visually-hidden"></span>
+                </button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/sync/task">Sync Task</a></li>
                   <li><a class="dropdown-item" href="/sync/logtime">Sync Logtime</a></li>
                   <li><a class="dropdown-item" href="/sync/meta-data">Sync Metadata</a></li>
                 </ul>
-              </li>
+              </div>
             </ul>
           </div>
           <form class="d-flex" role="search">

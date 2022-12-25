@@ -2,8 +2,59 @@
 {% block content %}
 
 <div class=" d-flex justify-content-center">
-  <span class="h1 border rounded border-primary mb-4">Task Process</span>
+  <h1  class="fs-1 badge bg-primary text-wrap mb-4">{{project}}</h1>
 </div>
+<form method="get">
+  <div class="input-group mb-3">
+    <label class="input-group-text" for="inputGroupSelect01">Project</label>
+    <select name="project" class="form-select" id="inputGroupSelect01">
+      <option value="{{project_value}}" selected>{{project}}</option>
+      <option value="">All</option>
+      <option value="1000">Shiten</option>
+      <option value="2000">Garage Sales</option>
+      <option value="3000">Other</option>
+    </select>
+    <label class="input-group-text" for="inputGroupSelect01">Status</label>
+    <select name="status" class="form-select" id="inputGroupSelect01">
+      <option value="{{status_value}}" name="status" selected>{{status}}</option>
+      <option value="">All</option>
+      <option value="1">New</option>
+      <option value="2">In Process</option>
+      <option value="3">Resolved</option>
+      <option value="4">Feedback</option>
+      <option value="5">Closed</option>
+      <option value="6">Rejected</option>
+      <option value="7">In Review</option>
+      <option value="8">In JP Review</option>
+    </select>
+    <label class="input-group-text" for="inputGroupSelect01">Assignee</label>
+    <select name="person" class="form-select" id="inputGroupSelect01">
+      <option value="{{person_value}}" selected>{{person}}</option>
+      <option value="">All</option>
+      <option value="52">Phương</option>
+      <option value="57">Khoa</option>
+      <option value="58">Phước</option>
+      <option value="10">Liền</option>
+    </select>
+    <label class="input-group-text" for="inputGroupSelect01">Sort</label>
+    <select name="sort" class="form-select" id="inputGroupSelect01">
+      <option value="{{sort_value}}" selected>{{sort}}</option>
+      <option value="-updated_date">Updated ↓</option>
+      <option value="updated_date">Updated ↑</option>
+      <option value="-spent_time">Spent time ↓</option>
+      <option value="spent_time">Spent time ↑</option>
+    </select>
+    <label class="input-group-text" for="inputGroupSelect01">Limit</label>
+    <select name="limit" class="form-select" id="inputGroupSelect01">
+      <option value="{{limit_value}}" selected>{{limit}}</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="nolimit">All</option>
+    </select>
+    <button type="submit" class="ml-3 form-control btn btn-primary">OK</button>
+  </div>
+</form>
 <table class="table table-bordered border border-dark table-hover m-auto table-responsive">
     <thead style="vertical-align: middle;" class="text-center" >
       <tr>
