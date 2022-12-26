@@ -37,10 +37,10 @@
                   <span class="visually-hidden"></span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/top">New</a></li>
-                  <li><a class="dropdown-item" href="/top">In Process</a></li>
-                  <li><a class="dropdown-item" href="/top">Pending</a></li>
-                  <li><a class="dropdown-item" href="/top">Finish</a></li>
+                  <li><a class="dropdown-item" href="/top?status=1">New</a></li>
+                  <li><a class="dropdown-item" href="/top?status=2">In Process</a></li>
+                  <li><a class="dropdown-item" href="/top?status=1%2C2%2C7%2C8&updateStatus=pending">Pending</a></li>
+                  <li><a class="dropdown-item" href="/top?status=3%2C5%2C6">Finish</a></li>
                 </ul>
               </div>
               <div class="btn-group dropup" style="margin: 7px;">
@@ -51,10 +51,10 @@
                   <span class="visually-hidden"></span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/top?project=1000">New</a></li>
-                  <li><a class="dropdown-item" href="/top?project=1000">In Process</a></li>
-                  <li><a class="dropdown-item" href="/top?project=1000">Pending</a></li>
-                  <li><a class="dropdown-item" href="/top?project=1000">Finish</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000&status=1">New</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000&status=2">In Process</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000&status=1%2C2%2C7%2C8&updateStatus=pending">Pending</a></li>
+                  <li><a class="dropdown-item" href="/top?project=1000&status=3%2C5%2C6">Finish</a></li>
                 </ul>
               </div>
               <div class="btn-group dropup" style="margin: 7px;">
@@ -65,10 +65,23 @@
                   <span class="visually-hidden"></span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/top?project=2000">New</a></li>
-                  <li><a class="dropdown-item" href="/top?project=2000">In Process</a></li>
-                  <li><a class="dropdown-item" href="/top?project=2000">Pending</a></li>
-                  <li><a class="dropdown-item" href="/top?project=2000">Finish</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000&status=1">New</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000&status=2">In Process</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000&status=1%2C2%2C7%2C8&updateStatus=pending">Pending</a></li>
+                  <li><a class="dropdown-item" href="/top?project=2000&status=3%2C5%2C6">Finish</a></li>
+                </ul>
+              </div>
+              <div class="btn-group dropup" style="margin: 7px;">
+                <a href="/analytics/project" type="button" class="btn btn-secondary">
+                  Analytics
+                </a>
+                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span class="visually-hidden"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/analytics/project">Sync Task</a></li>
+                  <li><a class="dropdown-item" href="/analytics/project">Sync Logtime</a></li>
+                  <li><a class="dropdown-item" href="/analytics/project">Sync Metadata</a></li>
                 </ul>
               </div>
               <div class="btn-group dropup" style="margin: 7px;">

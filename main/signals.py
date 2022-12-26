@@ -15,7 +15,9 @@ def logtime_created(sender,instance,created,**kwargs):
         task.save()
         if parent_task := task.parent_task_id:
             parent_task.spent_time=F('spent_time')+instance.spent_time
+            parent_task.updated_date = timezone('Asia/Ho_Chi_Minh').localize(datetime.now())
             parent_task.save()
             if grand_task := parent_task.parent_task_id:
                 grand_task.spent_time=F('spent_time')+instance.spent_time
+                grand_task.updated_date = timezone('Asia/Ho_Chi_Minh').localize(datetime.now())
                 grand_task.save()

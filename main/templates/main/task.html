@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% block content %}
+<div class="text-center">
+    <div class="fs-2 rounded-5 fw-bold text-wrap badge bg-primary mb-1">Task #{{task.id}}</div>
+    <br>
+    <div class="fs-4 rounded-5 fw-bold text-wrap badge bg-primary mb-3">{{task.task_title}}</div>
+</div>
+
+<div class="progress mb-1 " style="height: 30px;">
+    <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: {{task.done_ratio}}%;" >{{task.done_ratio}}</div>
+</div>
+
+<div class="row">
+    <div class="col-md-8  bg bg-success p-2" style="--bs-bg-opacity: .8;">
+        <p class="fs-6 badge bg-secondary">Description</p> 
+        <p class="text-break">as</p>
+    </div>
+    <div class="col-md-4">
+        <div class="row bg bg-success p-2" style="--bs-bg-opacity: .6;">
+            <div class="row" >
+                <div class="col-md-4" ><p class="fs-6 badge bg-secondary">Assignee</p></div>
+                <div class="col-md-3" ><a href="#" class="btn-sm btn btn-outline-dark"> {{task.person_in_charge.name}} </a></div>
+            </div>
+            <div class="row" >
+                <div class="col-md-4"><p class="fs-6 badge bg-secondary">Status </div>
+                <div class="col-md-7" ><a href="#" class="btn btn-outline-dark"> {{task.status.status}} </a></div>
+            </div>
+            <div class="col-md-12"><p class="fs-6 badge bg-secondary">Created Date</p> {{task.created_date|date:'d-m-Y'}}</div>
+            <div class="col-md-12"><p class="fs-6 badge bg-secondary">Updated Date</p> {{task.updated_date|date:'d-m-Y'}}</div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

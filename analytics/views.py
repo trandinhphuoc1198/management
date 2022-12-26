@@ -31,4 +31,4 @@ def project_time_spent(request):
         'shiten_tasks':shiten_tasks,
         'grs_tasks':grs_tasks,
         'other_tasks':other_tasks}
-    return render(request,'analytics/home.html',context)
+    return render(request,'analytics/project.html',context)
