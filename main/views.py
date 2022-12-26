@@ -49,6 +49,7 @@ def home_view(request):
         limit_value = len(task_list)
     current_page = [None,'active',None] if request.GET.get('project')=='1000' else \
         ([None,None,'active'] if request.GET.get('project')=='2000' else ['active',None,None])
+    
     context = {
         'data' : data,
         'path' : current_page,
@@ -58,9 +59,8 @@ def home_view(request):
         'status_value' : ','.join(str(x) for x in status),
         'sort_value' : sort,
         'limit_value' : limit_value,
-        'project' : ','.join([x.project for x in Project.objects.filter(pk__in=project)]),
-        'person' : ','.join([x.name for x in Person.objects.filter(pk__in=person)]),
-        'status' : ','.join([x.status for x in Task_Status.objects.filter(pk__in=status)]),
+        'person' : Person.objects.filter(pk=person[0])[0].name if len(person)<2 else 'All',
+        'status' : Task_Status.objects.filter(pk=status[0])[0].status if len(status)<2 else 'All',
         'sort' : sort,
         'limit' : limit,
     }

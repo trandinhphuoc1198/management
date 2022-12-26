@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    
+    <link rel="icon" href="{% static 'images/python_logo.png' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,8 +28,8 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ">
-              <div class="btn-group dropup">
+            <ul class="navbar-nav " >
+              <div class="btn-group dropup" style="margin: 7px;">
                 <a href="/top" type="button" class="{{path.0}} btn btn-secondary">
                   All
                 </a>
@@ -43,7 +43,7 @@
                   <li><a class="dropdown-item" href="/top">Finish</a></li>
                 </ul>
               </div>
-              <div class="btn-group dropup">
+              <div class="btn-group dropup" style="margin: 7px;">
                 <a href="/top?project=1000" type="button" class="{{path.1}} btn btn-secondary">
                   Shiten
                 </a>
@@ -57,7 +57,7 @@
                   <li><a class="dropdown-item" href="/top?project=1000">Finish</a></li>
                 </ul>
               </div>
-              <div class="btn-group dropup">
+              <div class="btn-group dropup" style="margin: 7px;">
                 <a href="/top?project=2000" type="button" class=" {{path.2}} btn btn-secondary">
                   Garage Sales
                 </a>
@@ -71,7 +71,7 @@
                   <li><a class="dropdown-item" href="/top?project=2000">Finish</a></li>
                 </ul>
               </div>
-              <div class="btn-group dropup">
+              <div class="btn-group dropup" style="margin: 7px;">
                 <a href="/sync/task" type="button" class="btn btn-secondary">
                   Sync
                 </a>

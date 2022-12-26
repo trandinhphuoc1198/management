@@ -6,14 +6,9 @@
 </div>
 <form method="get">
   <div class="input-group mb-3">
-    <label class="input-group-text" for="inputGroupSelect01">Project</label>
-    <select name="project" class="form-select" id="inputGroupSelect01">
-      <option value="{{project_value}}" selected>{{project}}</option>
-      <option value="">All</option>
-      <option value="1000">Shiten</option>
-      <option value="2000">Garage Sales</option>
-      <option value="3000">Other</option>
-    </select>
+    
+    <input type="hidden" name="project" value="{{project_value}}">
+
     <label class="input-group-text" for="inputGroupSelect01">Status</label>
     <select name="status" class="form-select" id="inputGroupSelect01">
       <option value="{{status_value}}" name="status" selected>{{status}}</option>
@@ -27,8 +22,8 @@
       <option value="7">In Review</option>
       <option value="8">In JP Review</option>
     </select>
-    <label class="input-group-text" for="inputGroupSelect01">Assignee</label>
-    <select name="person" class="form-select" id="inputGroupSelect01">
+    <label class="input-group-text" for="inputGroupSelect02">Assignee</label>
+    <select name="person" class="form-select" id="inputGroupSelect02">
       <option value="{{person_value}}" selected>{{person}}</option>
       <option value="">All</option>
       <option value="52">Phương</option>
@@ -36,16 +31,16 @@
       <option value="58">Phước</option>
       <option value="10">Liền</option>
     </select>
-    <label class="input-group-text" for="inputGroupSelect01">Sort</label>
-    <select name="sort" class="form-select" id="inputGroupSelect01">
+    <label class="input-group-text" for="inputGroupSelect03">Sort</label>
+    <select name="sort" class="form-select" id="inputGroupSelect03">
       <option value="{{sort_value}}" selected>{{sort}}</option>
       <option value="-updated_date">Updated ↓</option>
       <option value="updated_date">Updated ↑</option>
       <option value="-spent_time">Spent time ↓</option>
       <option value="spent_time">Spent time ↑</option>
     </select>
-    <label class="input-group-text" for="inputGroupSelect01">Limit</label>
-    <select name="limit" class="form-select" id="inputGroupSelect01">
+    <label class="input-group-text" for="inputGroupSelect04">Limit</label>
+    <select name="limit" class="form-select" id="inputGroupSelect04">
       <option value="{{limit_value}}" selected>{{limit}}</option>
       <option value="10">10</option>
       <option value="20">20</option>
