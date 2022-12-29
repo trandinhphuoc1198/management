@@ -64,9 +64,19 @@ def home_view(request):
         'status' : Task_Status.objects.filter(pk=status[0])[0].status if len(status)<2 else ('All' if len(person) == 8 else ''),
         'sort' : sort,
         'limit' : limit,
+        'today' : today
     }
     return render(request,'main/home.html',context)
 
 def task_view(request,pk):
     task = Task.objects.get(pk=pk)
-    return render(request,'main/task.html',{'task':task})
+    parent_task = task.parent_task_id
+    child_task = Task.objects.filter(parent_task_id=task)
+    log_times = LogTime.objects.filter(task_id=task).order_by('-created_date')
+    context = {
+        'task' : task,
+        'parent_task' : parent_task,
+        'child_task' : child_task,
+        'log_times' : log_times
+    }
+    return render(request,'main/task.html',context)

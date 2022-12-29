@@ -7,22 +7,61 @@
 </div>
 
 <div class="progress mb-1 " style="height: 30px;">
-    <div class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: {{task.done_ratio}}%;" >{{task.done_ratio}}</div>
+    <div class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: {{task.done_ratio}}%;" >{{task.done_ratio}}</div>
 </div>
 
 <div class="row">
     <div class="col-md-8  bg bg-success p-2" style="--bs-bg-opacity: .8;">
-        <p class="fs-6 badge bg-secondary">Description</p> 
-        <p class="text-break">as</p>
+        <p class="m-1 fs-6 badge bg-secondary">Description</p> 
+        <div class="m-1 p-1  btn btn-outline-dark text-break">{{task.description}}</div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <span class="m-1 p-2 fs-6 badge bg-secondary">Project</span>
+                <span class="m-1" ><a href="/top?project={{task.project.id}}" class="btn-sm btn btn-outline-dark"> {{task.project.project}} </a></span>
+            </div>
+            <div class="col-md-6 ">
+                <span class="m-1 p-2 fs-6 badge bg-secondary">Category</span>
+                <span class="m-1" ><a href="/top?" class="btn-sm btn btn-outline-dark"> {{task.category.category}} </a></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 ">
+                <p class="  fs-6 badge bg-secondary">Parent Task</p> 
+            </div>
+            <div class="col-md-7">
+                <span class="m-1" ><a href="/top/{{parent_task.id}}" class="btn-sm btn btn-outline-dark {% if parent_task.done_ratio < 100 %} btn-danger {%endif%}"> {{parent_task.task_title}} </a></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 ">
+                <div class="m-1 fs-6 badge bg-secondary">Child Tasks</div> 
+            </div>
+            <div class="col-md-7">
+            {% for child in child_task%}
+                <div class="row">
+                    <span class="m-1" ><a href="/top/{{child.id}}" class="btn-sm btn btn-outline-dark {% if child.done_ratio < 100 %} btn-danger {%endif%}">{{child.task_title}}</a></span>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+
     </div>
     <div class="col-md-4">
         <div class="row bg bg-success p-2" style="--bs-bg-opacity: .6;">
             <div class="row" >
-                <div class="col-md-4" ><p class="fs-6 badge bg-secondary">Assignee</p></div>
-                <div class="col-md-3" ><a href="#" class="btn-sm btn btn-outline-dark"> {{task.person_in_charge.name}} </a></div>
+                <div class="col-md-5" ><p class="fs-6 badge bg-secondary">Assignee</p></div>
+                <div class="col-md-5" ><a href="/top?person={{task.person_in_charge.id}}" class="btn-sm btn btn-outline-dark"> {{task.person_in_charge.name}} </a></div>
             </div>
             <div class="row" >
-                <div class="col-md-4"><p class="fs-6 badge bg-secondary">Status </div>
+                <div class="col-md-5" ><p class="fs-6 badge bg-secondary">Spent time</p></div>
+                <div class="col-md-3" ><a href="#" class="btn-sm btn {%if task.spent_time > task.estimate_time%}btn-danger{%else%} btn-outline-dark {%endif%}"> {{task.spent_time}} </a></div>
+            </div>
+            <div class="row" >
+                <div class="col-md-5" ><p class="fs-6 badge bg-secondary">Estimate time</p></div>
+                <div class="col-md-3" ><a href="#" class="btn-sm btn btn-outline-dark"> {{task.estimate_time}} </a></div>
+            </div>
+            <div class="row" >
+                <div class="col-md-5"><p class="fs-6 badge bg-secondary">Status </p></div>
                 <div class="col-md-7" ><a href="#" class="btn btn-outline-dark"> {{task.status.status}} </a></div>
             </div>
             <div class="col-md-12"><p class="fs-6 badge bg-secondary">Created Date</p> {{task.created_date|date:'d-m-Y'}}</div>
@@ -30,6 +69,17 @@
         </div>
     </div>
 </div>
-
+{% for log_time in log_times %}
+    <div class="card mt-2">
+        <div class="card-header fst-italic">
+            {{log_time.created_date|timesince}} ago
+        </div>
+        <div class="card-body">
+        <h6 class=" fst-italic">{{log_time.person.name}} logged:</h6>
+        <p class="card-text">{{log_time.comments}}</p>
+        <span class="h6 fst-italic">Time spent</span><span class="m-1 badge bg-primary" >{{log_time.spent_time}}</span>
+        </div>
+    </div>
+{%endfor%}
 
 {% endblock content %}

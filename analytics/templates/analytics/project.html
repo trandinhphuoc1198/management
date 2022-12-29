@@ -2,40 +2,40 @@
 {% load static %}
 {% block content %}
 <div class="text-center">
-  <span class="fs-2 fw-bold text-wrap badge bg-primary">By Project <br> {{time_range}}</span>
+  <span class="fs-2 fw-bold text-wrap badge bg-primary">Summary {{person}}<br> {{time_range}}</span>
 </div>
-<div class="row mt-5">
+<div class="row mt-5 ">
     <div class="col-sm-5">
         <canvas id="myChart"></canvas>
     </div>
     <div class="col-sm-5">
       <table class="table table-sm table-hover">
         <thead>
-          <tr class="bg-white">
+          <tr class="text-center" class="bg-white">
             <th scope="col">#</th>
             <th scope="col">Project</th>
             <th scope="col">Time spent</th>
             <th scope="col">Tasks</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
           <tr>
             <th style="background-color: #3399ff;" scope="row">1</th>
             <td style="background-color: #3399ff;">Shiten</td>
             <td style="background-color: #3399ff;">{{data2.1000}}</td>
-            <td style="background-color: #3399ff;">{{shiten_tasks.count}}</td>
+            <td style="background-color: #3399ff;">{{shiten_task_sum.count}}</td>
           </tr>
           <tr>
             <th style="background-color: #ff6699;" scope="row">2</th>
             <td style="background-color: #ff6699;">Garage Sales</td>
             <td style="background-color: #ff6699;">{{data2.2000}}</td>
-            <td style="background-color: #ff6699;">{{grs_tasks.count}}</td>
+            <td style="background-color: #ff6699;">{{grs_task_sum.count}}</td>
           </tr>
           <tr>
             <th style="background-color: #ff9900;" scope="row">3</th>
             <td style="background-color: #ff9900;">Other</td>
             <td style="background-color: #ff9900;">{{data2.3000}}</td>
-            <td style="background-color: #ff9900;">{{other_tasks.count}}</td>
+            <td style="background-color: #ff9900;">{{other_task_sum.count}}</td>
           </tr>
         </tbody>
       </table>
@@ -52,10 +52,93 @@
           <button type="submit" class="form-control btn btn-primary">OK</button>
         </div>
       </form>
-      
     </div>
 </div>
-  
+
+<h3 class="text-center m-1">Shiten</h3>
+<table class="table table-hover table-bordered ">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">#</th>
+      <th style="width: 30ch;" scope="col">Title</th>
+      <th scope="col">Status</th>
+      <th scope="col">%</th>
+      <th scope="col">Spent Time</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {%for task,spent_time in tasks_detail.shiten%}
+    <tr class="{% if task.done_ratio == 100 %} table table-success {%endif%}">
+      <th class="text-center" scope="row">{{task.id}}</th>
+      <td>{{task.task_title}}</td>
+      <td class="text-center">{{task.status.status}}</td>
+      <td>
+        <div class="progress " style="width: 10ch;margin: auto;">
+          <div class="progress-bar bg-danger" role="progressbar" style="width: {{task.done_ratio}}%;" aria-valuenow="{{task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.done_ratio}}</div>
+        </div>
+      </td>
+      <td class="text-center">{{spent_time}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+<h3 class="text-center m-1">Garage Sales</h3>
+<table class="table table-hover table-bordered ">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">#</th>
+      <th style="width: 30ch;" scope="col">Title</th>
+      <th scope="col">Status</th>
+      <th scope="col">%</th>
+      <th scope="col">Spent Time</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {%for task,spent_time in tasks_detail.grs%}
+    <tr class="{% if task.done_ratio == 100 %} table table-success {%endif%}">
+      <th class="text-center" scope="row">{{task.id}}</th>
+      <td>{{task.task_title}}</td>
+      <td class="text-center">{{task.status.status}}</td>
+      <td>
+        <div class="progress " style="width: 10ch;margin: auto;">
+          <div class="progress-bar bg-danger" role="progressbar" style="width: {{task.done_ratio}}%;" aria-valuenow="{{task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.done_ratio}}</div>
+        </div>
+      </td>
+      <td class="text-center">{{spent_time}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+<h3 class="text-center m-1">Other</h3>
+<table class="table table-hover table-bordered ">
+  <thead>
+    <tr class="text-center">
+      <th scope="col">#</th>
+      <th style="width: 30ch;" scope="col">Title</th>
+      <th scope="col">Status</th>
+      <th scope="col">%</th>
+      <th scope="col">Spent Time</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {%for task,spent_time in tasks_detail.other%}
+    <tr class="{% if task.done_ratio == 100 %} table table-success {%endif%}">
+      <th class="text-center" scope="row">{{task.id}}</th>
+      <td>{{task.task_title}}</td>
+      <td class="text-center">{{task.status.status}}</td>
+      <td>
+        <div class="progress " style="width: 10ch;margin: auto;">
+          <div class="progress-bar bg-danger" role="progressbar" style="width: {{task.done_ratio}}%;" aria-valuenow="{{task.done_ratio}}" aria-valuemin="0" aria-valuemax="100">{{task.done_ratio}}</div>
+        </div>
+      </td>
+      <td class="text-center">{{spent_time}}</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+
+
   <script src="{% static 'chart.js' %}"></script>
   
   <script>
