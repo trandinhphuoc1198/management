@@ -75,9 +75,9 @@
             {{log_time.created_date|timesince}} ago
         </div>
         <div class="card-body">
-        <h6 class=" fst-italic">{{log_time.person.name}} logged:</h6>
+        <h6 class=" ">{{log_time.person.name}} logged:</h6>
         <p class="card-text">{{log_time.comments}}</p>
-        <span class="h6 fst-italic">Time spent</span><span class="m-1 badge bg-primary" >{{log_time.spent_time}}</span>
+        <span class="badge bg-primary">{{log_time.activity.activity}}</span><span class="m-1 badge bg-primary" >{{log_time.spent_time}}h</span>
         </div>
     </div>
 {%endfor%}

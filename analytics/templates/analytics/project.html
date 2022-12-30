@@ -70,7 +70,7 @@
     {%for task,spent_time in tasks_detail.shiten%}
     <tr class="{% if task.done_ratio == 100 %} table table-success {%endif%}">
       <th class="text-center" scope="row">{{task.id}}</th>
-      <td>{{task.task_title}}</td>
+      <th><a class="text-decoration-none" href="{% url 'task-view' task.id%}" >{{task.task_title}}</a></th>
       <td class="text-center">{{task.status.status}}</td>
       <td>
         <div class="progress " style="width: 10ch;margin: auto;">
@@ -97,7 +97,7 @@
     {%for task,spent_time in tasks_detail.grs%}
     <tr class="{% if task.done_ratio == 100 %} table table-success {%endif%}">
       <th class="text-center" scope="row">{{task.id}}</th>
-      <td>{{task.task_title}}</td>
+      <th><a class="text-decoration-none" href="{% url 'task-view' task.id%}" >{{task.task_title}}</a></th>
       <td class="text-center">{{task.status.status}}</td>
       <td>
         <div class="progress " style="width: 10ch;margin: auto;">
@@ -124,7 +124,7 @@
     {%for task,spent_time in tasks_detail.other%}
     <tr class="{% if task.done_ratio == 100 %} table table-success {%endif%}">
       <th class="text-center" scope="row">{{task.id}}</th>
-      <td>{{task.task_title}}</td>
+      <th><a class="text-decoration-none" href="{% url 'task-view' task.id%}" >{{task.task_title}}</a></th>
       <td class="text-center">{{task.status.status}}</td>
       <td>
         <div class="progress " style="width: 10ch;margin: auto;">
